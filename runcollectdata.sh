@@ -1,5 +1,5 @@
 PIPELINE=/pipeline/
-DATA=/data/mnt
+DATA=/tmp/pipeline
 
 echo 'Create network bridge'
 #docker run -p:7474:7474 -p 7687:7687 --env=NEO4J_AUTH=neo4j/neo --env=NEO4J_dbms_read__only=false rcourt/docker-neo4j-knowledgebase
@@ -27,7 +27,7 @@ docker run -p 4000:80 --net=dockernet --env=KBpassword=neo4j/neo vfbp-kb2kb
 docker run -p 4000:80 --net=dockernet --env=KBpassword=neo4j/neo vfbp-validatekb
 
 # Collect data for ingestion into triple store, including the OWL dump from the KB
-docker run -p 4000:80 --net=dockernet --volume /data/mnt:/out --env=KBpassword=neo4j/neo vfbp-data
+docker run -p 4000:80 --net=dockernet --volume /tmp/pipeline:/out --env=KBpassword=neo4j/neo vfbp-data
 
 # Load data into triple store
 docker run -p 4000:80 --net=dockernet --volume /data/mnt:/data --net=dockernet vfbp-ts
